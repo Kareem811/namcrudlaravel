@@ -23,8 +23,12 @@ class AuthRequest extends FormRequest
     {
         return [
             'name' => 'required|min:2|max:20',
-            'username' => 'required|min:2|max:20',
-            'phone' => 'string|required'
+            // 'username' => 'required|min:2|max:20',
+            'username' => 'required',
+            // 'phone' => 'string|required|regex:pattern',
+            'phone' => 'string|required|regex:/^[97]\d{7}$/',
+            'email' => "required",
+            'password' => 'required'
         ];
     }
 }

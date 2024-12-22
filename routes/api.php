@@ -74,8 +74,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 Route::controller(MessageController::class)->group(function () {
     Route::post('/send', 'send');
-    Route::get('/get','get');
+    Route::get('/get', 'get');
 });
+Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 // Route::middleware('auth:sanctum')->group(function () {
 //     Route::post('/logout', [AuthController::class, 'logout']);
 //     Route::get('/user', [AuthController::class, 'user']);
