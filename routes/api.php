@@ -4,6 +4,7 @@
 // use App\Http\Middleware\CheckUserRole;
 // use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,7 +70,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/products/{id}', [ProductController::class, 'update']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
     Route::get('/users', [AuthController::class, 'users']);
-    Route::post('/updaterole/{id}', [AuthController::class,'updaterole']);
+    Route::post('/updaterole/{id}', [AuthController::class, 'updaterole']);
+});
+Route::controller(MessageController::class)->group(function () {
+    Route::post('/send', 'send');
+    Route::get('/get','get');
 });
 // Route::middleware('auth:sanctum')->group(function () {
 //     Route::post('/logout', [AuthController::class, 'logout']);

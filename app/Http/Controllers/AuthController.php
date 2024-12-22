@@ -13,13 +13,15 @@ class AuthController extends Controller
 {
     public function register(AuthRequest $request)
     {
+        if (User::where('email', $request->email)->exists()) {
+            return Response::json(['message' => "Email is already used"], 409);
+        }
         User::create([
             "name" => $request->name,
             "username" => $request->username,
             "email" => $request->email,
             'password' => $request->password,
             'phone' => $request->phone,
-            'role' => 'user', // Default role
         ]);
         return Response::json(['message' => "Registered Successfully"], 201);
     }
