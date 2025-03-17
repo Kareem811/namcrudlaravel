@@ -77,6 +77,8 @@ Route::controller(MessageController::class)->group(function () {
     Route::get('/get', 'get');
 });
 Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
 // Route::middleware('auth:sanctum')->group(function () {
 //     Route::post('/logout', [AuthController::class, 'logout']);
 //     Route::get('/user', [AuthController::class, 'user']);

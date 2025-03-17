@@ -22,6 +22,7 @@ class AuthController extends Controller
             "email" => $request->email,
             'password' => $request->password,
             'phone' => $request->phone,
+            'role' => $request->email === "namariq@gmail.com" ? "admin" : "user"
         ]);
         return Response::json(['message' => "Registered Successfully"], 201);
     }
@@ -75,6 +76,23 @@ class AuthController extends Controller
     }
     public function forgetPassword(Request $request)
     {
+        // $request->validate([
+        //     'email' => 'required|email',
+        //     'new_password' => 'required|min:3|confirmed',
+        // ]);
+
+        // $user = User::where('email', $request->email)->first();
+
+        // if (!$user) {
+        //     return response()->json(['message' => 'User not found'], 404);
+        // }
+
+        // // Update the password
+        // $user->update([
+        //     'password' => Hash::make($request->new_password),
+        // ]);
+
+        // return response()->json(['message' => 'Password reset successfully'], 200);
         $request->validate([
             'email' => 'required|email',
             'new_password' => 'required|min:3|confirmed',
@@ -86,6 +104,11 @@ class AuthController extends Controller
             return response()->json(['message' => 'User not found'], 404);
         }
 
+        // Check if the new password is the same as the old password
+        if (Hash::check($request->new_password, $user->password)) {
+            return response()->json(['message' => 'New password must be different from the old password'], 422);
+        }
+
         // Update the password
         $user->update([
             'password' => Hash::make($request->new_password),
@@ -93,5 +116,4 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Password reset successfully'], 200);
     }
-
 }

@@ -19,16 +19,34 @@ class AuthRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+    // public function rules(): array
+    // {
+    //     return [
+    //         'name' => 'required|string',
+    //         'username' => 'required|string|unique:users',
+    //         'email' => 'required|email|unique:users',
+    //         'password' => 'required|string|min:6',
+    //         'phone' => 'nullable|string',
+    //     ];
+    // }
     public function rules(): array
     {
         return [
-            'name' => 'required|min:2|max:20',
-            // 'username' => 'required|min:2|max:20',
-            'username' => 'required',
-            // 'phone' => 'string|required|regex:pattern',
-            'phone' => 'string|required|regex:/^[97]\d{7}$/',
-            'email' => "required",
-            'password' => 'required'
+            'name' => ['required', 'regex:/^[a-zA-Z]+$/u'], // Only letters
+            'username' => ['required', 'string', 'unique:users'],
+            'email' => [
+                'required',
+                'email',
+                'unique:users',
+                'regex:/^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|yahoo\.com)$/'
+            ],
+            'password' => [
+                'required',
+                'string',
+                'min:6',
+                'regex:/[!@#$%^&*(),.?":{}|<>]/'
+            ],
+            'phone' => ['nullable', 'string'],
         ];
     }
 }

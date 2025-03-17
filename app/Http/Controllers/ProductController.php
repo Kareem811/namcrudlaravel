@@ -18,28 +18,28 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'pname' => 'required|string',
-            'pprice' => 'required|numeric',
-            'pcategory' => 'required|string',
-            'pdescription' => 'required|string',
-            'pimgs' => 'required|array',
-            'pimgs.*' => 'file|mimes:jpg,jpeg,png|max:2048', // Validate each image
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'category' => 'required|string',
+            'description' => 'required|string',
+            'images' => 'required|array',
+            'images.*' => 'file|mimes:jpg,jpeg,png,webp',
         ]);
 
         $imagePaths = [];
-        if ($request->hasFile('pimgs')) {
-            foreach ($request->file('pimgs') as $file) {
-                $path = $file->store('products', 'public'); // Save in the 'storage/app/public/products' directory
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('products', 'public');
                 $imagePaths[] = $path;
             }
         }
 
         $product = Product::create([
-            'pname' => $validated['pname'],
-            'pprice' => $validated['pprice'],
-            'pcategory' => $validated['pcategory'],
-            'pdescription' => $validated['pdescription'],
-            'pimgs' => json_encode($imagePaths),
+            'name' => $validated['name'],
+            'price' => $validated['price'],
+            'category' => $validated['category'],
+            'description' => $validated['description'],
+            'images' => json_encode($imagePaths),
         ]);
 
         return response()->json(['message' => 'Product created successfully', 'product' => $product]);
@@ -55,15 +55,32 @@ class ProductController extends Controller
     public function update(Request $request, Product $id)
     {
         $validated = $request->validate([
-            'pname' => 'string',
-            'pprice' => 'numeric',
-            'pcategory' => 'string',
-            'pdescription' => 'string',
-            'pimgs' => 'array',
+            'name' => 'sometimes|string',
+            'price' => 'sometimes|numeric',
+            'category' => 'sometimes|string',
+            'description' => 'sometimes|string',
+            'images' => 'sometimes|array',
+            'images.*' => 'file|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
+        // Handle Image Upload
+        if ($request->hasFile('images')) {
+            $imagePaths = [];
+
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('products', 'public'); // Store in 'storage/app/public/products'
+                $imagePaths[] = $path;
+            }
+
+            $validated['images'] = json_encode($imagePaths); // Convert array to JSON for storage
+        }
+
         $id->update($validated);
-        return response()->json(['message' => 'Product updated successfully', 'product' => $id]);
+
+        return response()->json([
+            'message' => 'Product updated successfully',
+            'product' => $id
+        ]);
     }
 
     public function destroy($id)
