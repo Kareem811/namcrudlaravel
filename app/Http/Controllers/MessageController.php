@@ -22,4 +22,17 @@ class MessageController extends Controller
     {
         return Response::json(Message::all());
     }
+    public function reply(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:messages,id',
+            'reply' => 'required|string',
+        ]);
+
+        $message = Message::find($request->id);
+        $message->reply = $request->reply;
+        $message->save();
+
+        return response()->json(['msg' => 'Replied successfully']);
+    }
 }

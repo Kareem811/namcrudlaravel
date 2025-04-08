@@ -47,9 +47,14 @@ class AuthController extends Controller
     }
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
-        $cookie = cookie()->forget('jwt');
-        return response()->json(['message' => 'Logged out successfully'], 200)->withCookie($cookie);
+        // $request->user()->tokens()->delete();
+        // $cookie = cookie()->forget('jwt');
+        $request->user()->tokens->each(
+            function ($token) {
+                $token->delete();
+            }
+        );
+        return response()->json(['message' => 'Logged out successfully'], 200);
     }
     public function user(Request $request)
     {

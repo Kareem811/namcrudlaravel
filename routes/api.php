@@ -72,20 +72,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/users', [AuthController::class, 'users']);
     Route::post('/updaterole/{id}', [AuthController::class, 'updaterole']);
 });
-Route::controller(MessageController::class)->group(function () {
-    Route::post('/send', 'send');
-    Route::get('/get', 'get');
-});
+Route::post('/send', [MessageController::class, 'send']);
+Route::get('/get', [MessageController::class, 'get']);
+Route::post('/reply', [MessageController::class, 'reply']);
+// Route::controller(MessageController::class)->group(function () {
+//     Route::post('/send', 'send');
+//     Route::get('/get', 'get');
+//     Route::post('/reply' , 'reply');
+// });
 Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 // Route::middleware('auth:sanctum')->group(function () {
-//     Route::post('/logout', [AuthController::class, 'logout']);
-//     Route::get('/user', [AuthController::class, 'user']);
-
-//     // Role-Based Routes
-//     Route::middleware('role:admin')->group(function () {
-//         Route::get('/admin/dashboard', function () {
+    //     Route::post('/logout', [AuthController::class, 'logout']);
+    //     Route::get('/user', [AuthController::class, 'user']);
+    
+    //     // Role-Based Routes
+    //     Route::middleware('role:admin')->group(function () {
+        //         Route::get('/admin/dashboard', function () {
 //             return response()->json(['message' => 'Welcome to Admin Dashboard']);
 //         });
 //     });

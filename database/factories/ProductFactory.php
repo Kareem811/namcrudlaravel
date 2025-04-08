@@ -17,12 +17,12 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'pname' => $this->faker->word(),
-            'pprice' => $this->faker->randomFloat(2, 10, 1000),
-            'pcategory' => $this->faker->randomElement(['Electronics', 'Clothing', 'Books', 'Home Appliances']),
+            'name' => $this->faker->word(),
+            'price' => $this->faker->randomFloat(2, 10, 1000),
+            'category' => $this->faker->sentence(),
             // Generate a longer description with multiple paragraphs
-            'pdescription' => implode(' ', $this->faker->paragraphs(mt_rand(2, 4))),
-            'pimgs' => json_encode($this->faker->randomElements(
+            'description' => implode(' ', $this->faker->paragraphs(mt_rand(2, 4))),
+            'images' => json_encode($this->faker->randomElements(
                 [
                     $this->faker->imageUrl(640, 480, 'products', true, 'Product 1'),
                     $this->faker->imageUrl(640, 480, 'products', true, 'Product 2'),
