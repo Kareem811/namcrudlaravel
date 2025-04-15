@@ -121,4 +121,9 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Password reset successfully'], 200);
     }
+    public function profile($id)
+    {
+        $user = User::with('messages')->findOrFail($id);
+        return Response::json(['user' => $user]);
+    }
 }

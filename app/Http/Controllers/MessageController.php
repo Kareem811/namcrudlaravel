@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -11,10 +12,18 @@ class MessageController extends Controller
 {
     public function send(Request $request)
     {
+        // Message::create([
+        //     'name' => $request->username,
+        //     'email' => $request->email,
+        //     'message' => $request->message,
+        // ]);
+        $user = User::where('email', $request->email)->first();
+
         Message::create([
             'name' => $request->username,
             'email' => $request->email,
             'message' => $request->message,
+            'user_id' => $user ? $user->id : null,
         ]);
         return Response::json("Success", 201);
     }
