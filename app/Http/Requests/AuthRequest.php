@@ -46,7 +46,7 @@ class AuthRequest extends FormRequest
                 'min:6',
                 'regex:/[!@#$%^&*(),.?":{}|<>]/'
             ],
-            'phone' => ['nullable', 'string'],
+            'phone' => ['nullable', 'regex:/^(9|7)[0-9]{7}$/'],
         ];
     }
 }

@@ -10,16 +10,25 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Product::all());
+        // return response()->json(Product::all());
+        $query = Product::query();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('name', 'like', "%$search%")
+                ->orWhere('category', 'like', "%$search%");
+        }
+
+        return response()->json($query->get());
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:1',
             'category' => 'required|string',
             'description' => 'required|string',
             'images' => 'required|array',

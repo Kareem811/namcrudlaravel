@@ -4,6 +4,7 @@
 // use App\Http\Middleware\CheckUserRole;
 // use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -84,6 +85,8 @@ Route::post('/reply', [MessageController::class, 'reply']);
 Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::post('/booking', [BookingController::class, 'store']);
+
 // Route::middleware('auth:sanctum')->group(function () {
     //     Route::post('/logout', [AuthController::class, 'logout']);
     //     Route::get('/user', [AuthController::class, 'user']);
