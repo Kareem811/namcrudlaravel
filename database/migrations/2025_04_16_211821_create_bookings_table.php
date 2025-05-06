@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('number');
-            $table->string('department');
-            $table->string('service');
-            $table->enum('type', ['online', 'offline']);
-            $table->date('date');
-            $table->time('time');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('username')->nullable();
+            $table->string('number')->nullable();
+            $table->string('department')->nullable();
+            $table->string('service')->nullable();
+            $table->enum('type', ['online', 'offline'])->nullable();
+            $table->date('date')->nullable();
+            $table->time('time')->nullable();
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending')->nullable();
             $table->timestamps();
         });
     }

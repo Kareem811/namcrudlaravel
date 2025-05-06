@@ -4,23 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class BookingController extends Controller
 {
+    public function index()
+    {
+        $bookings = Booking::with('user')->get();
+        return Response::json(['bookings' => $bookings]);
+    }
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|max:255',
-            'number' => ['required', 'regex:/^(9|7)\d{7}$/'],
             'department' => 'required|string',
             'service' => 'required|string',
             'type' => 'required|in:online,offline',
             'date' => 'required|date',
             'time' => 'required',
+            'user_id' => 'nullable|exists:users,id',
+            'username' => 'required_without:user_id|string',
+            'number' => 'required_without:user_id|string',
         ]);
+
+
 
         Booking::create($request->all());
 
         return response()->json('Success');
+    }
+    public function handlestatus(Request $request, Booking $id)
+    {
+        $status = $request->status;
+
+        // Toggle logic
+        if ($status === "accepted") {
+            $id->update(['status' => "rejected"]);
+        } else {
+            $id->update(['status' => "accepted"]);
+        }
+
+        return response()->json(['message' => "Status changed successfully"]);
     }
 }
