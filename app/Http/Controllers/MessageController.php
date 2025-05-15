@@ -18,7 +18,9 @@ class MessageController extends Controller
         //     'message' => $request->message,
         // ]);
         $user = User::where('email', $request->email)->first();
-
+        $request->validate([
+            'message' => "regex:/^[a-zA-Z0-9\s]+$/"
+        ]);
         Message::create([
             'name' => $request->username,
             'email' => $request->email,

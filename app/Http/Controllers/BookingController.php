@@ -16,17 +16,15 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'department' => 'required|string',
-            'service' => 'required|string',
+            'service' => 'required|string|in:Technical Support,Account Help,New Subscription,Other',
             'type' => 'required|in:online,offline',
-            'date' => 'required|date',
+            'date' => 'required|date|after_or_equal:today',
             'time' => 'required',
+            'description' => 'nullable|string|max:1000',
             'user_id' => 'nullable|exists:users,id',
             'username' => 'required_without:user_id|string',
             'number' => 'required_without:user_id|string',
         ]);
-
-
 
         Booking::create($request->all());
 

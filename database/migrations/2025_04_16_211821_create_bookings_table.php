@@ -16,12 +16,12 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->string('username')->nullable();
             $table->string('number')->nullable();
-            $table->string('department')->nullable();
             $table->string('service')->nullable();
             $table->enum('type', ['online', 'offline'])->nullable();
             $table->date('date')->nullable();
             $table->time('time')->nullable();
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
