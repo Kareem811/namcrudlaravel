@@ -123,7 +123,30 @@ class AuthController extends Controller
     }
     public function profile($id)
     {
-        $user = User::with('messages')->findOrFail($id);
+        $user = User::with('messages' , 'bookings')->findOrFail($id);
         return Response::json(['user' => $user]);
+    }
+    public function updatedata(Request $request , User $id)
+    {
+        $request->validate([
+            'name' => ['required', 'regex:/^[a-zA-Z]+$/u'], // Only letters
+            'username' => ['required', 'string', 'unique:users'],
+            'email' => [
+                'required',
+                'email',
+                'unique:users',
+                'regex:/^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|yahoo\.com)$/'
+            ],
+            'phone' => ['nullable', 'regex:/^(9|7)[0-9]{7}$/'],
+        ]);
+        $id->update([
+            "name" => $request->name,
+            "username" => $request->username,
+            "email" => $request->email,
+            'password' => $id->password,
+            'phone' => $request->phone,
+            'role' =>"user"
+        ]);
+        return Response::json(['message' => "Updated"], 201);
     }
 }

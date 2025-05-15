@@ -44,6 +44,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
     Route::get('/profile/{id}', 'profile');
+    Route::post('/updatedata/{id}', 'updatedata');
 });
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -85,8 +86,9 @@ Route::post('/reply', [MessageController::class, 'reply']);
 Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
-// Route::post('/bookings', [BookingController::class, 'store']);
-Route::resource('/bookings', BookingController::class);
+Route::post('/bookings', [BookingController::class, 'store']);
+// Route::resource('/bookings', BookingController::class);
+Route::get('/bookings', [BookingController::class, 'index']);
 Route::put('/handlestatus/{id}', [BookingController::class, 'handlestatus']);
 // Route::middleware('auth:sanctum')->group(function () {
     //     Route::post('/logout', [AuthController::class, 'logout']);
